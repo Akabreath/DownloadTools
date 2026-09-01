@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# 子工具敏感数据/运行产物（绝不提交）
+tools/*/config.json
+tools/*/history.json
+tools/*/gql_cache.json
+tools/*/downloads/
+
+# 系统/编辑器
+.DS_Store
+*.log
+.idea/
+.vscode/
