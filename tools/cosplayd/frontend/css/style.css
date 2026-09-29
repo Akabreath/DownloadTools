@@ -350,3 +350,23 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 24px 60px; }
   .topbar { margin: 12px; flex-wrap: wrap; gap: 10px; }
   main { padding: 0 12px 40px; }
 }
+
+/* ===== 悬浮「一键滑动到结尾」按钮 ===== */
+.scroll-bottom-btn {
+  position: fixed; right: 22px; bottom: 26px; z-index: 95;
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; line-height: 1; cursor: pointer;
+  color: #fff; border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.38);
+  opacity: 0; transform: translateY(14px) scale(0.9);
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease, box-shadow .22s ease;
+}
+.scroll-bottom-btn.show { opacity: 1; transform: none; pointer-events: auto; }
+.scroll-bottom-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45); }
+.scroll-bottom-btn:active { transform: translateY(0); }
+@media (max-width: 720px) {
+  .scroll-bottom-btn { right: 14px; bottom: 18px; width: 44px; height: 44px; font-size: 20px; }
+}

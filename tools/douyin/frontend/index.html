@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>bili · bilibili 视频下载</title>
+<title>douyin · 抖音视频下载</title>
 <script>
 /* 主题: 防闪烁, 先于 CSS 生效 */
 (function(){
@@ -14,7 +14,7 @@
 })();
 </script>
 <link rel="stylesheet" href="static/css/style.css?v=20260930">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
 </head>
 <body>
 <div class="bg-glow"></div>
@@ -22,10 +22,10 @@
 
 <header class="topbar glass">
   <div class="logo">
-    <span class="logo-ico">📺</span>
+    <span class="logo-ico">🎵</span>
     <div>
-      <h1>b<span class="accent">ili</span></h1>
-      <p class="tagline">bilibili 视频与 UP主投稿下载工具</p>
+      <h1>d<span class="accent">ouyin</span></h1>
+      <p class="tagline">抖音视频 / 图集 / 主页作品下载工具</p>
     </div>
   </div>
   <div class="header-actions">
@@ -49,8 +49,8 @@
 <main>
   <!-- 模式切换 -->
   <div class="mode-seg glass">
-    <button class="mode-btn active" data-mode="video">🎬 视频解析下载</button>
-    <button class="mode-btn" data-mode="space">👤 UP主投稿下载</button>
+    <button class="mode-btn active" data-mode="video">🎬 单作品解析下载</button>
+    <button class="mode-btn" data-mode="user">👤 主页作品下载</button>
   </div>
 
   <!-- 下载进度 -->
@@ -68,13 +68,13 @@
     </div>
   </section>
 
-  <!-- 视频模式 -->
+  <!-- 单作品模式 -->
   <section id="videoPanel" class="card glass">
-    <h2>视频解析下载</h2>
-    <p class="hint">粘贴 bilibili 视频链接或整段分享文字均可（支持桌面链接与 b23.tv 短链），如「【大王，看迷糊了没】 https://www.bilibili.com/video/BV1DJbu6HExJ/?share_source=copy_web」</p>
+    <h2>单作品解析下载</h2>
+    <p class="hint">粘贴抖音分享文案或链接均可（自动抽取 <b>v.douyin.com</b> 短链 / douyin.com/video/… / …modal_id=），例如「4.66 复制打开抖音，看看【xxx的作品】… https://v.douyin.com/xxxx/ 05/24」。视频与图文（图集）都支持，无需 Cookie。</p>
     <div class="input-row">
-      <input type="text" id="vUrlInput" placeholder="https://www.bilibili.com/video/BVxxxxxxxxxx 或 https://b23.tv/xxxxxx" spellcheck="false">
-      <button id="vParseBtn" class="btn btn-primary">🔍 解析视频</button>
+      <input type="text" id="vUrlInput" placeholder="https://v.douyin.com/xxxxxx/  或  https://www.douyin.com/video/7xxxxxxxxxxxxxxxxxx" spellcheck="false">
+      <button id="vParseBtn" class="btn btn-primary">🔍 解析作品</button>
     </div>
     <div id="vStatus" class="status-line"></div>
 
@@ -84,27 +84,26 @@
         <div class="v-info">
           <div class="v-title" id="vTitle">—</div>
           <div class="v-meta" id="vMeta"></div>
-          <div class="v-variants">
+          <div class="v-variants" id="vQualityBox">
             <label class="sel-label">清晰度</label>
             <select id="vQuality" class="select"></select>
           </div>
-          <div id="vPagesBox" class="pages-box hidden"></div>
           <div class="v-actions">
             <button id="vDlBtn" class="btn btn-primary">⬇ 下载</button>
-            <span class="v-dl-hint" id="vDlHint"></span>
           </div>
+          <div class="v-dl-hint" id="vDlHint"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- UP主模式 -->
-  <section id="spacePanel" class="card glass hidden">
-    <h2>UP主投稿下载</h2>
-    <p class="hint">粘贴 UP主空间链接（space.bilibili.com/数字ID，可混在分享文字中），抓取其全部投稿视频。需要登录 Cookie 才能稳定抓取，文件夹以 UP主名字命名，默认打包 ZIP 下载</p>
+  <!-- 主页模式 -->
+  <section id="userPanel" class="card glass hidden">
+    <h2>主页作品下载</h2>
+    <p class="hint">粘贴「长按复制此条消息，打开抖音搜索，查看TA的更多作品」分享文案，或 <b>douyin.com/user/&lt;sec_uid&gt;</b> 链接。文件夹与 ZIP 以作者昵称命名；视频与图文都会下载。<b>主页翻页需要登录 Cookie</b>（未配置时抖音匿名只返回部分作品）。</p>
     <div class="input-row">
-      <input type="text" id="sUrlInput" placeholder="https://space.bilibili.com/3546915322988637" spellcheck="false">
-      <button id="sParseBtn" class="btn btn-primary">🔍 抓取投稿</button>
+      <input type="text" id="sUrlInput" placeholder="https://v.douyin.com/xxxxxx/  或  https://www.douyin.com/user/MS4wLjABAAAA..." spellcheck="false">
+      <button id="sParseBtn" class="btn btn-primary">🔍 抓取作品</button>
     </div>
     <div id="sStatus" class="status-line"></div>
 
@@ -117,16 +116,22 @@
         </div>
         <div class="up-actions">
           <button class="btn btn-ghost btn-sm" id="sSelectAll">☑ 全选</button>
-          <label class="sel-label" for="sQuality">清晰度</label>
-          <select id="sQuality" class="select"></select>
+          <label class="sel-label" for="sQuality">清晰度上限</label>
+          <select id="sQuality" class="select">
+            <option value="0">最高可用</option>
+            <option value="1080">1080P</option>
+            <option value="720">720P</option>
+            <option value="540">540P</option>
+          </select>
           <label class="chk"><input type="checkbox" id="sZip" checked> 打包 ZIP</label>
           <button id="sDlBtn" class="btn btn-primary" disabled>⬇ 下载选中</button>
         </div>
       </div>
       <div class="media-actions">
-        <span class="pill" id="sCount">0 个视频</span>
+        <span class="pill" id="sCount">0 个作品</span>
         <span class="pill-sub" id="sHint"></span>
       </div>
+      <div id="sWarn" class="warn-box hidden"></div>
       <div id="sGrid" class="m-grid"></div>
     </div>
   </section>
@@ -140,7 +145,7 @@
     <div id="historyList" class="history-list"><p class="empty">暂无记录</p></div>
   </section>
 
-  <p class="foot-note">ℹ 下载均为临时中转：文件直接推送到当前浏览器/手机，不会长期保存在服务器。1080P 及以上清晰度与 UP主投稿抓取需要登录 Cookie —— 点击右上角「Cookie 设置」，在浏览器 F12 → Network → 刷新 www.bilibili.com → 任选一个 api.bilibili.com 请求 → Request Headers 复制完整 Cookie 粘贴保存。</p>
+  <p class="foot-note">ℹ 单作品（视频/图文）匿名解析即可下载，走服务器流式代理直推浏览器，<b>不落服务器磁盘</b>、不进历史；主页批量下载需要服务器临时落盘打包，任务完成 1 小时后自动清理。主页翻页（第 2 页起）抖音要求登录态：点右上角「Cookie 设置」，在浏览器 F12 → Network → 刷新 www.douyin.com → 任选一个 api 请求 → Request Headers 复制完整 Cookie（须含 sessionid）粘贴保存。</p>
 </main>
 
 <!-- Cookie 设置弹窗 -->
@@ -150,8 +155,8 @@
       <h3>⚙️ Cookie 设置</h3>
       <button class="modal-close" id="cfgClose">✕</button>
     </div>
-    <p class="hint">从浏览器开发者工具复制 bilibili 登录后的完整 Cookie（须含 SESSDATA/bili_jct/DedeUserID），粘贴到下方：</p>
-    <textarea id="cookieInput" class="textarea" rows="6" placeholder="buvid3=xxx; SESSDATA=xxx; bili_jct=xxx; ..." spellcheck="false"></textarea>
+    <p class="hint">可选：单作品解析下载无需 Cookie；抓取主页<b>全部</b>作品需要网页版登录后的完整 Cookie（须含 sessionid）。ttwid 由后端自动获取，无需填。</p>
+    <textarea id="cookieInput" class="textarea" rows="6" placeholder="passport_csrf_token=xxx; sessionid=xxx; sessionid_ss=xxx; ... " spellcheck="false"></textarea>
     <div id="cfgStatus" class="status-line"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" id="cfgClear">清空</button>
@@ -162,6 +167,6 @@
 
 <script src="static/js/theme.js?v=20260909"></script>
   <script src="static/js/scrollbtn.js?v=20260930"></script>
-<script src="static/js/app.js?v=20260908"></script>
+<script src="static/js/app.js?v=20260929"></script>
 </body>
 </html>

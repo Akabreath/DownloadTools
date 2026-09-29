@@ -13,7 +13,7 @@
   document.documentElement.dataset.theme = dark ? "dark" : "light";
 })();
 </script>
-<link rel="stylesheet" href="static/css/style.css?v=20260909">
+<link rel="stylesheet" href="static/css/style.css?v=20260930">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
 </head>
 <body>
@@ -52,6 +52,20 @@
     <button class="mode-btn active" data-mode="video">🎬 视频解析下载</button>
     <button class="mode-btn" data-mode="media">🖼 媒体时间线抓取</button>
   </div>
+
+  <!-- 下载进度 -->
+  <section id="progressPanel" class="card glass hidden">
+    <div class="prog-head"><span id="progPhase">准备中…</span><span id="progPct" class="prog-pct">0%</span></div>
+    <div class="prog-bar"><div id="progFill" class="prog-fill"></div></div>
+    <div class="prog-meta">
+      <span id="progDetail">0 / 0</span>
+      <span id="progElapsed"></span>
+    </div>
+    <div class="prog-errors hidden" id="progErrors"></div>
+    <div class="prog-actions hidden" id="progActions">
+      <a id="zipLink" class="btn btn-success" download>📦 下载 ZIP</a>
+    </div>
+  </section>
 
   <!-- 视频模式 -->
   <section id="videoPanel" class="card glass">
@@ -122,20 +136,6 @@
     <div id="historyList" class="history-list"><p class="empty">暂无记录</p></div>
   </section>
 
-  <!-- 进度 -->
-  <section id="progressPanel" class="card glass hidden">
-    <div class="prog-head"><span id="progPhase">准备中…</span><span id="progPct" class="prog-pct">0%</span></div>
-    <div class="prog-bar"><div id="progFill" class="prog-fill"></div></div>
-    <div class="prog-meta">
-      <span id="progDetail">0 / 0</span>
-      <span id="progElapsed"></span>
-    </div>
-    <div class="prog-errors hidden" id="progErrors"></div>
-    <div class="prog-actions hidden" id="progActions">
-      <a id="zipLink" class="btn btn-success" download>📦 下载 ZIP</a>
-    </div>
-  </section>
-
   <p class="foot-note">⚠ 认证提示：媒体时间线需要登录态。点击右上角「Cookie 设置」，从浏览器开发者工具 (F12 → Network → 刷新页面 → 任意 x.com 请求 → Request Headers) 复制完整 Cookie 值粘贴保存。</p>
 </main>
 
@@ -157,6 +157,7 @@
 </div>
 
 <script src="static/js/theme.js?v=20260909"></script>
+  <script src="static/js/scrollbtn.js?v=20260930"></script>
 <script src="static/js/app.js?v=20260813b"></script>
 </body>
 </html>
