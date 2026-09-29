@@ -4,7 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>cosplayD · Cosplay 图片下载工具</title>
-<link rel="stylesheet" href="static/css/style.css?v=20260812">
+<script>
+/* 主题: 防闪烁, 先于 CSS 生效 */
+(function(){
+  var t = "auto";
+  try { t = localStorage.getItem("dt-theme") || "auto"; } catch (e) {}
+  var dark = t === "dark" || (t === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+})();
+</script>
+<link rel="stylesheet" href="static/css/style.css?v=20260909">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
 </head>
 <body>
@@ -21,6 +30,14 @@
   </div>
   <div class="header-actions">
     <a class="btn btn-ghost btn-sm" href="/">🏠 返回主页</a>
+    <div class="theme-wrap">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="切换主题" title="主题：跟随系统">💻</button>
+      <div class="theme-menu" id="themeMenu" hidden>
+        <button type="button" data-theme="auto">💻 跟随系统</button>
+        <button type="button" data-theme="light">☀️ 亮色</button>
+        <button type="button" data-theme="dark">🌙 暗色</button>
+      </div>
+    </div>
     <div class="server-status">
       <span class="dot" id="srvDot"></span>
       <span id="srvText">连接中…</span>
@@ -121,6 +138,7 @@
 
 <footer class="foot">cosplayD · 仅用于个人学习与收藏</footer>
 
+<script src="static/js/theme.js?v=20260909"></script>
 <script src="static/js/app.js?v=20260812"></script>
 </body>
 </html>

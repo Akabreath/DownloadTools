@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>xdl · X 视频媒体下载</title>
+<title>bili · bilibili 视频下载</title>
 <script>
 /* 主题: 防闪烁, 先于 CSS 生效 */
 (function(){
@@ -14,7 +14,7 @@
 })();
 </script>
 <link rel="stylesheet" href="static/css/style.css?v=20260909">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
 </head>
 <body>
 <div class="bg-glow"></div>
@@ -22,10 +22,10 @@
 
 <header class="topbar glass">
   <div class="logo">
-    <span class="logo-ico">🐦</span>
+    <span class="logo-ico">📺</span>
     <div>
-      <h1>x<span class="accent">dl</span></h1>
-      <p class="tagline">X (Twitter) 视频与媒体下载工具</p>
+      <h1>b<span class="accent">ili</span></h1>
+      <p class="tagline">bilibili 视频与 UP主投稿下载工具</p>
     </div>
   </div>
   <div class="header-actions">
@@ -50,15 +50,15 @@
   <!-- 模式切换 -->
   <div class="mode-seg glass">
     <button class="mode-btn active" data-mode="video">🎬 视频解析下载</button>
-    <button class="mode-btn" data-mode="media">🖼 媒体时间线抓取</button>
+    <button class="mode-btn" data-mode="space">👤 UP主投稿下载</button>
   </div>
 
   <!-- 视频模式 -->
   <section id="videoPanel" class="card glass">
     <h2>视频解析下载</h2>
-    <p class="hint">粘贴 X 视频链接（含 /video/1 或纯 status 链接），免登录解析全部清晰度</p>
+    <p class="hint">粘贴 bilibili 视频链接或整段分享文字均可（支持桌面链接与 b23.tv 短链），如「【大王，看迷糊了没】 https://www.bilibili.com/video/BV1DJbu6HExJ/?share_source=copy_web」</p>
     <div class="input-row">
-      <input type="url" id="vUrlInput" placeholder="https://x.com/user/status/1234567890/video/1" spellcheck="false">
+      <input type="text" id="vUrlInput" placeholder="https://www.bilibili.com/video/BVxxxxxxxxxx 或 https://b23.tv/xxxxxx" spellcheck="false">
       <button id="vParseBtn" class="btn btn-primary">🔍 解析视频</button>
     </div>
     <div id="vStatus" class="status-line"></div>
@@ -72,44 +72,62 @@
           <div class="v-variants">
             <label class="sel-label">清晰度</label>
             <select id="vQuality" class="select"></select>
-            <button id="vCopyBtn" class="btn btn-ghost btn-sm" title="复制选中清晰度的链接">📋 复制链接</button>
           </div>
+          <div id="vPagesBox" class="pages-box hidden"></div>
           <div class="v-actions">
             <button id="vDlBtn" class="btn btn-primary">⬇ 下载</button>
-            <label class="chk"><input type="checkbox" id="vZip"> 打包 ZIP</label>
-            <span class="seg-inline">
-              <button class="seg-btn seg-btn-sm active" data-vdest="browser">🌐 浏览器</button>
-              <button class="seg-btn seg-btn-sm" data-vdest="server">🖥 服务器</button>
-            </span>
+            <span class="v-dl-hint" id="vDlHint"></span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 媒体模式 -->
-  <section id="mediaPanel" class="card glass hidden">
-    <h2>媒体时间线抓取</h2>
-    <p class="hint">粘贴用户媒体页链接（x.com/用户名 或 x.com/用户名/media 均可，自动补全），需要已登录的 Cookie 才能获取时间线</p>
+  <!-- UP主模式 -->
+  <section id="spacePanel" class="card glass hidden">
+    <h2>UP主投稿下载</h2>
+    <p class="hint">粘贴 UP主空间链接（space.bilibili.com/数字ID，可混在分享文字中），抓取其全部投稿视频。需要登录 Cookie 才能稳定抓取，文件夹以 UP主名字命名，默认打包 ZIP 下载</p>
     <div class="input-row">
-      <input type="url" id="mUrlInput" placeholder="https://x.com/用户名 或 https://x.com/用户名/media" spellcheck="false">
-      <button id="mParseBtn" class="btn btn-primary">🔍 抓取媒体</button>
+      <input type="text" id="sUrlInput" placeholder="https://space.bilibili.com/3546915322988637" spellcheck="false">
+      <button id="sParseBtn" class="btn btn-primary">🔍 抓取投稿</button>
     </div>
-    <div id="mStatus" class="status-line"></div>
+    <div id="sStatus" class="status-line"></div>
 
-    <div id="mResult" class="hidden">
-      <div class="media-actions">
-        <span class="pill" id="mCount">0 条</span>
-        <button class="btn btn-ghost btn-sm" id="mSelectAll">☑ 全选</button>
-        <label class="chk"><input type="checkbox" id="mOnlyImg"> 仅图片</label>
-        <label class="chk"><input type="checkbox" id="mZip" checked> 打包 ZIP</label>
-        <span class="seg-inline">
-          <button class="seg-btn seg-btn-sm active" data-dest2="browser">🌐 浏览器</button>
-          <button class="seg-btn seg-btn-sm" data-dest2="server">🖥 服务器</button>
-        </span>
-        <button id="mDlBtn" class="btn btn-primary" disabled>⬇ 下载选中</button>
+    <div id="sResult" class="hidden">
+      <div class="up-head">
+        <img id="upFace" class="up-face" alt="">
+        <div class="up-info">
+          <div class="v-title" id="upName">—</div>
+          <div class="v-meta" id="upMeta"></div>
+        </div>
+        <div class="up-actions">
+          <button class="btn btn-ghost btn-sm" id="sSelectAll">☑ 全选</button>
+          <label class="sel-label" for="sQuality">清晰度</label>
+          <select id="sQuality" class="select"></select>
+          <label class="chk"><input type="checkbox" id="sZip" checked> 打包 ZIP</label>
+          <button id="sDlBtn" class="btn btn-primary" disabled>⬇ 下载选中</button>
+        </div>
       </div>
-      <div id="mGrid" class="m-grid"></div>
+      <div class="media-actions">
+        <span class="pill" id="sCount">0 个视频</span>
+        <span class="pill-sub" id="sHint"></span>
+      </div>
+      <div id="sGrid" class="m-grid"></div>
+    </div>
+  </section>
+
+  <!-- 下载进度 -->
+  <section id="progressPanel" class="card glass hidden">
+    <div class="prog-head"><span id="progPhase">准备中…</span><span id="progPct" class="prog-pct">0%</span></div>
+    <div class="prog-bar"><div id="progFill" class="prog-fill"></div></div>
+    <div class="prog-meta">
+      <span id="progDetail">0 / 0</span>
+      <span id="progElapsed"></span>
+    </div>
+    <div class="prog-errors hidden" id="progErrors"></div>
+    <div class="prog-actions hidden" id="progActions">
+      <a id="zipLink" class="btn btn-success" download>📦 下载 ZIP</a>
+      <span class="prog-clean-note">服务器仅临时中转，保留 1 小时后自动清理，请及时保存文件</span>
     </div>
   </section>
 
@@ -122,21 +140,7 @@
     <div id="historyList" class="history-list"><p class="empty">暂无记录</p></div>
   </section>
 
-  <!-- 进度 -->
-  <section id="progressPanel" class="card glass hidden">
-    <div class="prog-head"><span id="progPhase">准备中…</span><span id="progPct" class="prog-pct">0%</span></div>
-    <div class="prog-bar"><div id="progFill" class="prog-fill"></div></div>
-    <div class="prog-meta">
-      <span id="progDetail">0 / 0</span>
-      <span id="progElapsed"></span>
-    </div>
-    <div class="prog-errors hidden" id="progErrors"></div>
-    <div class="prog-actions hidden" id="progActions">
-      <a id="zipLink" class="btn btn-success" download>📦 下载 ZIP</a>
-    </div>
-  </section>
-
-  <p class="foot-note">⚠ 认证提示：媒体时间线需要登录态。点击右上角「Cookie 设置」，从浏览器开发者工具 (F12 → Network → 刷新页面 → 任意 x.com 请求 → Request Headers) 复制完整 Cookie 值粘贴保存。</p>
+  <p class="foot-note">ℹ 下载均为临时中转：文件直接推送到当前浏览器/手机，不会长期保存在服务器。1080P 及以上清晰度与 UP主投稿抓取需要登录 Cookie —— 点击右上角「Cookie 设置」，在浏览器 F12 → Network → 刷新 www.bilibili.com → 任选一个 api.bilibili.com 请求 → Request Headers 复制完整 Cookie 粘贴保存。</p>
 </main>
 
 <!-- Cookie 设置弹窗 -->
@@ -146,8 +150,8 @@
       <h3>⚙️ Cookie 设置</h3>
       <button class="modal-close" id="cfgClose">✕</button>
     </div>
-    <p class="hint">从浏览器开发者工具复制 X 登录后的完整 Cookie（含 auth_token 与 ct0），粘贴到下方：</p>
-    <textarea id="cookieInput" class="textarea" rows="6" placeholder="auth_token=xxx; ct0=xxx; ..." spellcheck="false"></textarea>
+    <p class="hint">从浏览器开发者工具复制 bilibili 登录后的完整 Cookie（须含 SESSDATA/bili_jct/DedeUserID），粘贴到下方：</p>
+    <textarea id="cookieInput" class="textarea" rows="6" placeholder="buvid3=xxx; SESSDATA=xxx; bili_jct=xxx; ..." spellcheck="false"></textarea>
     <div id="cfgStatus" class="status-line"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" id="cfgClear">清空</button>
@@ -157,6 +161,6 @@
 </div>
 
 <script src="static/js/theme.js?v=20260909"></script>
-<script src="static/js/app.js?v=20260813b"></script>
+<script src="static/js/app.js?v=20260908"></script>
 </body>
 </html>
